@@ -8,6 +8,8 @@
 
 <?php if (count($cpd->leituras) > 0): ?>
 
+    <a href="/admin/cpd/<?=$cpd->id?>/exportar" class="btn btn-primary">Exportar CSV</a>
+
     <table class="table">
         <tr>
             <th>Data/Horário</th>

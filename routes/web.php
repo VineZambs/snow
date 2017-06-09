@@ -89,6 +89,20 @@ $app->get('/admin/cpd/{id}/relatorio', function ($id) use ($app) {
     return view('admin', ['view' => 'relatorio', 'usuario' => Session::user(), 'cpd' => $cpd]);
 });
 
+$app->get('/admin/cpd/{id}/exportar', function ($id) use ($app) {
+    $cpd = Cpd::find($id);
+    $csv = "data;temperatura;humidade\n";
+    
+    foreach($cpd->leituras as $leitura){
+        $horario = date('d/m/Y h:i:s');
+        $csv .= "$horario;$leitura->temperatura;$leitura->humidade\n";
+    }
+    
+    file_put_contents('relatorio.csv', $csv);
+    
+    return response()->download('relatorio.csv');
+});
+
 /** Api **/
 $app->post('/api/leitura', function (Request $request) use ($app) {    
     $cpd = Cpd::where('numero_serial', '=', $request->input('serial'))->first();
