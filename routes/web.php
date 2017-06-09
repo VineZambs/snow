@@ -16,6 +16,7 @@ use \App\Empresa;
 use \App\Session;
 use \Illuminate\Http\Request;
 
+/** Site **/
 $app->get('/', function () use ($app) {
     return view('site', ['view' => 'home']);
 });
@@ -53,6 +54,26 @@ $app->post('/login', function (Request $request) use ($app) {
     return view('site', ['view' => 'login']);
 });
 
-$app->get('/admin/dashboard', function () use ($app) {
+/** Admin **/
+$app->get('/admin/dashboard', function () use ($app) {    
     return view('admin', ['view' => 'dashboard', 'usuario' => Session::obterUsuario()]);
+});
+
+$app->get('/admin/cadastro', function () use ($app) {    
+    return view('admin', ['view' => 'cadastro', 'usuario' => Session::obterUsuario()]);
+});
+
+$app->post('/admin/cadastro', function (Request $request) use ($app) {    
+    $usuario = Session::obterUsuario();
+    $usuario->empresa->cpds()->create($request->input('cpd'));
+    
+    return redirect('admin/dashboard');
+});
+
+/** Api **/
+$app->post('/api/leitura', function (Request $request) use ($app) {    
+    $cpd = App\Cpd::where(['numero', '=', $request->input('serial')])->first();
+    $cpd->leituras()->create($request->input('leitura'));
+    
+    return (new Illuminate\Http\Response(null, 201));
 });

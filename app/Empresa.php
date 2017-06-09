@@ -20,4 +20,9 @@ class Empresa extends Model
     {
         return $this->hasOne('App\Endereco');
     }
+    
+    public function cpds()
+    {
+        return $this->hasMany('App\Cpd');
+    }
 }

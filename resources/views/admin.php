@@ -1,3 +1,7 @@
+<?php
+    $cpds = $usuario->empresa->cpds()->get();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,10 +27,12 @@
                         CPD's <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">CPD 1</a></li>
-                        <li><a href="#">CPD 2</a></li>
-                        <li><a href="#">CPD 3</a></li>
-                        <li><a href="#">CPD 4</a></li>
+                        <li><a href="/admin/cadastro">Cadastrar CPD</a></li>
+                        <?php foreach($cpds as $cpd): ?>
+                            <li>
+                                <a href="/admin/monitorar?cpd=<?=$cpd->id?>">CPD <?=$cpd->numero_serial?></a>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
                 </li>
                 <li>
@@ -51,8 +57,8 @@
         <?php include("admin/$view.php") ?>
     </div>
 
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 
 </body>
 </html>
