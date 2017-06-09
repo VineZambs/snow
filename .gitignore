@@ -1,5 +1,5 @@
 /.idea
-/.netbeans
+/nbproject
 Homestead.json
 Homestead.yaml
 relatorio.csv
