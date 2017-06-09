@@ -1,0 +1,18 @@
+body{
+    background-image: url('../img/bg-form.jpg');
+}
+
+label{
+    color: white;
+    text-shadow: 1px 1px 1px #888;
+}
+
+h1{
+    text-align: center;
+}
+
+h1, h2{
+    color: #317eac;
+    font-weight: bold;
+    text-shadow: 0 0px 3px white;
+}
