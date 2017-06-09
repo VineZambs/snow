@@ -30,16 +30,10 @@
                         <li><a href="/admin/cadastro">Cadastrar CPD</a></li>
                         <?php foreach($cpds as $cpd): ?>
                             <li>
-                                <a href="/admin/monitorar?cpd=<?=$cpd->id?>">CPD <?=$cpd->numero_serial?></a>
+                                <a href="/admin/cpd/<?=$cpd->id?>">CPD <?=$cpd->numero_serial?></a>
                             </li>
                         <?php endforeach; ?>
                     </ul>
-                </li>
-                <li>
-                    <a href="#">Relatórios </a>
-                </li>
-                <li>
-                    <a href="#">Cadastro</a>
                 </li>
             </ul>
             <div class="nav navbar-nav navbar-right">
@@ -47,7 +41,7 @@
                     <a>Olá, <?= $usuario->nome ?></a>
                 </li>
                 <li>
-                    <a href="/admin.php?pagina=logout">Sair</a>
+                    <a href="/admin/logout">Sair</a>
                 </li>
             </div>
         </div>

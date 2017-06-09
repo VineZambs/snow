@@ -54,19 +54,19 @@
                     <ul class="nav navbar-nav">
 
                         <li class="hidden">
-                            <a href="#page-top"></a>
+                            <a href="/"></a>
                         </li>
 
                         <li>
-                            <a class="page-scroll" href="#about">Quem nós somos</a>
+                            <a class="page-scroll" href="/#about">Quem nós somos</a>
                         </li>
 
                         <li>
-                            <a class="page-scroll" href="#download">Missão</a>
+                            <a class="page-scroll" href="/#download">Missão</a>
                         </li>
 
                         <li>
-                            <a class="page-scroll" href="#contact">Contato</a>
+                            <a class="page-scroll" href="/#contact">Contato</a>
                         </li>
 
                         <li>
@@ -87,16 +87,16 @@
         <?php include "site/$view.php" ?>
 
         <!-- jQuery -->
-        <script src="js/jquery.js"></script>
+        <script src="/js/jquery.js"></script>
 
         <!-- Bootstrap Core JavaScript -->
-        <script src="js/bootstrap.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
 
         <!-- Plugin JavaScript -->
-        <script src="js/jquery.easing.min.js"></script>
+        <script src="/js/jquery.easing.min.js"></script>
 
 
         <!-- Custom Theme JavaScript -->
-        <script src="js/grayscale.js"></script>
+        <script src="/js/grayscale.js"></script>
     </body>
 </html>

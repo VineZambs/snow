@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Leitura extends Model
 {
     public $timestamps = false;
-    protected $table = 'leitura_cpd';
+    protected $table = 'cpd_leitura';
 
     protected $fillable = [
         'temperatura', 'humidade', 'horario'

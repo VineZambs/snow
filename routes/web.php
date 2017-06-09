@@ -13,6 +13,7 @@
 
 use \App\Usuario;
 use \App\Empresa;
+use \App\Cpd;
 use \App\Session;
 use \Illuminate\Http\Request;
 
@@ -36,7 +37,7 @@ $app->post('/cadastro', function (Request $request) use ($app) {
     
     $usuario->empresa()->save($empresa);
     
-    return view('site', ['view' => 'cadastro']);
+    return redirect('site/login');
 });
 
 $app->get('/login', function () use ($app) {
@@ -47,7 +48,7 @@ $app->post('/login', function (Request $request) use ($app) {
     $usuario = Usuario::where('email', '=', $request->input('email'))->first();
     
     if($usuario && $usuario->senha == $request->input('senha')){
-        Session::logarUsuario($usuario);
+        Session::login($usuario);
         return redirect('admin/dashboard');
     }
     
@@ -56,11 +57,17 @@ $app->post('/login', function (Request $request) use ($app) {
 
 /** Admin **/
 $app->get('/admin/dashboard', function () use ($app) {    
-    return view('admin', ['view' => 'dashboard', 'usuario' => Session::obterUsuario()]);
+    return view('admin', ['view' => 'dashboard', 'usuario' => Session::user()]);
+});
+
+$app->get('/admin/logout', function () use ($app) {
+    Session::logout();
+    
+    return redirect('/');
 });
 
 $app->get('/admin/cadastro', function () use ($app) {    
-    return view('admin', ['view' => 'cadastro', 'usuario' => Session::obterUsuario()]);
+    return view('admin', ['view' => 'cadastro', 'usuario' => Session::user()]);
 });
 
 $app->post('/admin/cadastro', function (Request $request) use ($app) {    
@@ -70,10 +77,31 @@ $app->post('/admin/cadastro', function (Request $request) use ($app) {
     return redirect('admin/dashboard');
 });
 
+$app->get('/admin/cpd/{id}', function ($id) use ($app) {
+    $cpd = Cpd::find($id);
+    
+    return view('admin', ['view' => 'monitoracao', 'usuario' => Session::user(), 'cpd' => $cpd]);
+});
+
+$app->get('/admin/cpd/{id}/relatorio', function ($id) use ($app) {
+    $cpd = Cpd::find($id);
+    
+    return view('admin', ['view' => 'relatorio', 'usuario' => Session::user(), 'cpd' => $cpd]);
+});
+
 /** Api **/
 $app->post('/api/leitura', function (Request $request) use ($app) {    
-    $cpd = App\Cpd::where(['numero', '=', $request->input('serial')])->first();
-    $cpd->leituras()->create($request->input('leitura'));
-    
+    $cpd = Cpd::where('numero_serial', '=', $request->input('serial'))->first();
+
+    if(!$cpd){
+        return (new Illuminate\Http\Response(null, 404));
+    }
+
+    $cpd->leituras()->create([
+        'temperatura' => $request->input('temperatura'), 
+        'humidade' => $request->input('humidade'), 
+        'horario' => date('Y-m-d h:i:s'), 
+    ]);
+
     return (new Illuminate\Http\Response(null, 201));
 });
