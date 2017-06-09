@@ -16,9 +16,9 @@
             <th>Temperatura</th>
             <th>Humidade</th>
         </tr>
-        <?php foreach ($cpd->leituras as $leitura): ?>
+        <?php foreach ($cpd->leituras()->orderBy('horario', 'desc')->get() as $leitura): ?>
             <tr>
-                <td><?= date('d/m/Y h:i:s', $leitura->data) ?></td>
+                <td><?= date('d/m/Y h:i:s', strtotime($leitura->horario)) ?></td>
                 <td><?= $leitura->temperatura ?> C</td>
                 <td><?= $leitura->humidade ?> </td>
             </tr>

@@ -55,6 +55,10 @@ $app->post('/login', function (Request $request) use ($app) {
     return view('site', ['view' => 'login']);
 });
 
+$app->get('/teste', function () use ($app) {
+    return view('teste');
+});
+
 /** Admin **/
 $app->get('/admin/dashboard', function () use ($app) {    
     return view('admin', ['view' => 'dashboard', 'usuario' => Session::user()]);
@@ -94,7 +98,7 @@ $app->get('/admin/cpd/{id}/exportar', function ($id) use ($app) {
     $csv = "data;temperatura;humidade\n";
     
     foreach($cpd->leituras as $leitura){
-        $horario = date('d/m/Y h:i:s');
+        $horario = date('d/m/Y h:i:s', $leitura->horario);
         $csv .= "$horario;$leitura->temperatura;$leitura->humidade\n";
     }
     
@@ -114,8 +118,10 @@ $app->post('/api/leitura', function (Request $request) use ($app) {
     $cpd->leituras()->create([
         'temperatura' => $request->input('temperatura'), 
         'humidade' => $request->input('humidade'), 
-        'horario' => date('Y-m-d h:i:s'), 
+        'horario' => date('Y-m-d h:i:s')
     ]);
+    
+    echo date('Y-m-d h:i:s');
 
     return (new Illuminate\Http\Response(null, 201));
 });
