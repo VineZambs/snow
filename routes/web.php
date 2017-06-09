@@ -75,7 +75,7 @@ $app->get('/admin/cadastro', function () use ($app) {
 });
 
 $app->post('/admin/cadastro', function (Request $request) use ($app) {    
-    $usuario = Session::obterUsuario();
+    $usuario = Session::user();
     $usuario->empresa->cpds()->create($request->input('cpd'));
     
     return redirect('admin/dashboard');
