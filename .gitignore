@@ -1,5 +1,6 @@
 /.idea
 /nbproject
+.env
 Homestead.json
 Homestead.yaml
 relatorio.csv

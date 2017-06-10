@@ -6,47 +6,47 @@
 
             <div class="form-group col-md-10">
                 <label>Nome</label>
-                <input type="text" class="form-control" name="usuario[nome]">
+                <input type="text" class="form-control" name="usuario[nome]" required>
             </div>
 
 
             <div class="form-group col-md-2">
                 <label>CPF</label>
-                <input type="text" class="form-control" name="usuario[cpf]">
+                <input type="text" class="form-control" name="usuario[cpf]" required>
             </div>
 
             <div class="form-group col-md-2">
                 <label>RG</label>
-                <input type="text" class="form-control" name="usuario[rg]">
+                <input type="text" class="form-control" name="usuario[rg]" required>
             </div>
 
             <div class="form-group col-md-4">
                 <label>CEP</label>
-                <input type="text" class="form-control" name="usuario_endereco[cep]">
+                <input type="text" class="form-control" name="usuario_endereco[cep]" required>
             </div>
 
             <div class="form-group col-md-6">
                 <label>Endereço</label>
-                <input type="text" class="form-control" name="usuario_endereco[logradouro]">
+                <input type="text" class="form-control" name="usuario_endereco[logradouro]" required>
             </div>
 
             <div class="form-group col-md-2">
                 <label>Numero</label>
-                <input type="text" class="form-control" name="usuario_endereco[numero]">
+                <input type="text" class="form-control" name="usuario_endereco[numero]" required>
             </div>
             <div class="form-group col-md-2">
                 <label>Bairro</label>
-                <input type="text" class="form-control" name="usuario_endereco[bairro]">
+                <input type="text" class="form-control" name="usuario_endereco[bairro]" required>
             </div>
 
             <div class="form-group col-md-4">
                 <label>Estado</label>
-                <input type="text" class="form-control" name="usuario_endereco[estado]">
+                <input type="text" class="form-control" name="usuario_endereco[estado]" required>
             </div>
 
             <div class="form-group col-md-4">
                 <label>Cidade</label>
-                <input type="text" class="form-control" name="usuario_endereco[cidade]">
+                <input type="text" class="form-control" name="usuario_endereco[cidade]" required>
             </div>
 
         </div>
@@ -56,42 +56,42 @@
             <h2 class="col-md-12">Dados da Empresa</h2>
             <div class="form-group col-md-12">
                 <label>Razao Social</label>
-                <input type="text" class="form-control" name="empresa[razao_social]">
+                <input type="text" class="form-control" name="empresa[razao_social]" required>
             </div>
 
             <div class="form-group col-md-4">
                 <label>CNPJ</label>
-                <input type="text" class="form-control"  name="empresa[cnpj]">
+                <input type="text" class="form-control"  name="empresa[cnpj]" required>
             </div>
 
             <div class="form-group col-md-4">
                 <label>CEP</label>
-                <input type="text" class="form-control" name="empresa_endereco[cep]">
+                <input type="text" class="form-control" name="empresa_endereco[cep]" required>
             </div>
 
             <div class="form-group col-md-6">
                 <label>Endereço</label>
-                <input type="text" class="form-control" name="empresa_endereco[logradouro]">
+                <input type="text" class="form-control" name="empresa_endereco[logradouro]" required>
             </div>
 
             <div class="form-group col-md-2">
                 <label>Numero</label>
-                <input type="text" class="form-control" name="empresa_endereco[numero]">
+                <input type="text" class="form-control" name="empresa_endereco[numero]" required>
             </div>
 
             <div class="form-group col-md-4">
                 <label>Bairro</label>
-                <input type="text" class="form-control" name="empresa_endereco[bairro]">
+                <input type="text" class="form-control" name="empresa_endereco[bairro]" required>
             </div>
 
             <div class="form-group col-md-4">
                 <label>Estado</label>
-                <input type="text" class="form-control" name="empresa_endereco[estado]">
+                <input type="text" class="form-control" name="empresa_endereco[estado]" required>
             </div>
 
             <div class="form-group col-md-4">
                 <label>Cidade</label>
-                <input type="text" class="form-control" name="empresa_endereco[cidade]">
+                <input type="text" class="form-control" name="empresa_endereco[cidade]" required>
             </div>
         </div>
 
@@ -99,17 +99,17 @@
             <h2 class="col-md-12">Dados de Login</h2>
             <div class="form-group col-md-2">
                 <label>E-mail</label>
-                <input type="text" class="form-control" name="usuario[email]">
+                <input type="email" class="form-control" name="usuario[email]" required>
             </div>
 
             <div class="form-group col-md-2">
                 <label>Senha</label>
-                <input type="text" class="form-control"  name="usuario[senha]">
+                <input type="password" class="form-control"  name="usuario[senha]" required>
             </div>
 
             <div class="form-group col-md-2">
                 <label>Confirme a Senha</label>
-                <input type="text" class="form-control" name="confirmar_senha">
+                <input type="password" class="form-control" name="confirmar_senha" required>
             </div>
         </div>
 
