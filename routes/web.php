@@ -102,9 +102,9 @@ $app->get('/admin/cpd/{id}/exportar', function ($id) use ($app) {
         $csv .= "$horario;$leitura->temperatura;$leitura->humidade\n";
     }
     
-    file_put_contents('relatorio.csv', $csv);
+    file_put_contents('storage/relatorio.csv', $csv);
     
-    return response()->download('relatorio.csv');
+    return response()->download('storage/relatorio.csv');
 });
 
 /** Api **/
