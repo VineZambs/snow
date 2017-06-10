@@ -1,3 +1,13 @@
 body{
     background-image: url('../img/bg-form.jpg');
+    color: white;
+}
+
+a, a:visited{
+    color: white;
+}
+
+h2, h3{
+    text-shadow: 2px 2px 15px white;
+    font-weight: bold
 }

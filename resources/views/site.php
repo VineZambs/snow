@@ -42,7 +42,7 @@
 
                     </button>
 
-                    <a class="navbar-brand page-scroll" href="#page-top">
+                    <a class="navbar-brand page-scroll" href="/#page-top">
 
                         <i class=></i>  <span class="light">SNOW</span> SYSTEM
                     </a>
