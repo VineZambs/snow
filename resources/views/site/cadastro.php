@@ -1,5 +1,5 @@
-<section class="container has-header">
-    <form method="post">
+<section class="intro">
+    <form class="container has-header" method="post">
         <div class="row">
 
             <h2 class="col-md-12">Dados do Contratante</h2>

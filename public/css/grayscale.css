@@ -89,7 +89,7 @@ a:focus {
 }
 
 .navbar-custom a {
-    color: #a9a9a9;
+    color: white;
 }
 
 .navbar-custom .nav li a {
@@ -146,7 +146,7 @@ a:focus {
     height: auto;
     padding: 100px 0;
     text-align: center;
-    color: #a9a9a9;
+    color: white;
     background: url('../img/bg-home.jpg') no-repeat bottom center scroll;
     background-color: #000;
     -webkit-background-size: cover;
