@@ -116,6 +116,14 @@
         <button type="submit" name="button" class="btn btn-primary">Cadastrar</button>
     </form>
 
-
-
 </section>
+
+<script>
+    document.body.onload = function(){
+        $('[name="usuario[cpf]"]').mask('000.000.000');   
+        $('[name="empresa[cnpj]"]').mask('00.000.000/0000-00');   
+        $('[name="usuario[telefone]"]').mask('(00)0000-0000');   
+        $('[name="usuario_endereco[cep]"]').mask('00000-000');   
+        $('[name="empresa_endereco[cep]"]').mask('00000-000');   
+    };
+</script>

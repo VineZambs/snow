@@ -37,7 +37,7 @@ $app->post('/cadastro', function (Request $request) use ($app) {
     
     $usuario->empresa()->save($empresa);
     
-    return redirect('site/login');
+    return view('site', ['view' => 'cadastro-sucesso']);
 });
 
 $app->get('/login', function () use ($app) {
@@ -49,7 +49,7 @@ $app->post('/login', function (Request $request) use ($app) {
     
     if($usuario && $usuario->senha == $request->input('senha')){
         Session::login($usuario);
-        return redirect('admin/dashboard');
+        return redirect('/admin/dashboard');
     }
     
     return view('site', ['view' => 'login']);
@@ -78,7 +78,9 @@ $app->post('/admin/cadastro', function (Request $request) use ($app) {
     $usuario = Session::user();
     $usuario->empresa->cpds()->create($request->input('cpd'));
     
-    return redirect('admin/dashboard');
+    $cpd = $usuario->empresa->cpds()->where('numero_serial', '=', $request->input('cpd')['numero_serial'])->first();
+    
+    return view('admin', ['view' => 'cadastro-sucesso', 'cpd' => $cpd, 'usuario' => Session::user()]);
 });
 
 $app->get('/admin/cpd/{id}', function ($id) use ($app) {
