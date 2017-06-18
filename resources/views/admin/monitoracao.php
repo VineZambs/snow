@@ -8,18 +8,20 @@
     <ul class="nav nav-tabs">
         <li class="active"><a href="/admin/cpd/<?= $cpd->id ?>">Monitoração</a></li>
         <li><a href="/admin/cpd/<?= $cpd->id ?>/relatorio">Relatório</a></li>
+        <a href="/admin/cpd/<?= $cpd->id ?>/exportar" class="btn btn-primary" style="float:right">Exportar CSV</a>
     </ul>
 
-    <div class="col-md-4">
+    <div class="col-md-6">
         <canvas id="gauge-temperatura"></canvas>
-        <p>Temperatura</p>
+        <p class="gauge-title">Temperatura: <?= $leitura_atual->temperatura ?> °C</p>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-6">
         <canvas id="gauge-humidade"></canvas>
-        <p>Humidade</p>
+        <p class="gauge-title">Humidade: <?= number_format($leitura_atual->humidade * 100, 2, ',', '') ?>%</p>
     </div>
 
+    <p style="float: right">Última leitura: <?=date('d/m/Y h:i:s', strtotime($leitura_atual->horario))?>
 
     <script src="/js/gauge.min.js"></script>
     <script>
@@ -46,17 +48,17 @@
         gaugeTemperatura.maxValue = 60; // set max gauge value
         gaugeTemperatura.setMinValue(0);  // Prefer setter over gauge.minValue = 0
         gaugeTemperatura.animationSpeed = 32; // set animation speed (32 is default value)
-        gaugeTemperatura.set(<?= $leitura_atual->temperatura?>); // set actual value
-        
+        gaugeTemperatura.set(<?= $leitura_atual->temperatura ?>); // set actual value
+
         /* Gauge Humidade */
         opts.colorStart = '#920';
         opts.colorStop = '#920';
-        
+
         var gaugeHumidade = new Gauge(document.getElementById('gauge-humidade')).setOptions(opts); // create sexy gauge!
-        gaugeHumidade.maxValue = 60; // set max gauge value
+        gaugeHumidade.maxValue = 1; // set max gauge value
         gaugeHumidade.setMinValue(0);  // Prefer setter over gauge.minValue = 0
         gaugeHumidade.animationSpeed = 10; // set animation speed (32 is default value)
-        gaugeHumidade.set(<?= $leitura_atual->humidade?>); // set actual value
+        gaugeHumidade.set(<?= $leitura_atual->humidade ?>); // set actual value
     </script>
 
 <?php else: ?>

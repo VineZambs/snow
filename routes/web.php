@@ -83,7 +83,7 @@ $app->post('/admin/cadastro', function (Request $request) use ($app) {
     $serialExistente = Cpd::where('numero_serial', '=', $request->input('cpd')['numero_serial'])->count();
     
     if($serialExistente){
-        return view('admin', ['view' => 'cadastro', 'erro' => 'Número serial já cadastrado no sistema.']);
+        return view('admin', ['view' => 'cadastro', 'usuario' => Session::user(), 'erro' => 'Número serial já cadastrado no sistema.']);
     }
     
     $usuario = Session::user();
@@ -139,6 +139,8 @@ $app->post('/admin/perfil', function (Request $request) use ($app) {
     $usuario->empresa->endereco->fill($request->input('empresa_endereco'));
     $usuario->empresa->endereco->save();
     
+    Session::login($usuario);
+    
     return view('admin', ['view' => 'perfil', 'usuario' => $usuario, 'sucesso' => 'Os dados foram atualizados!']);
 });
 
@@ -156,7 +158,5 @@ $app->post('/api/leitura', function (Request $request) use ($app) {
         'horario' => date('Y-m-d h:i:s')
     ]);
     
-    echo date('Y-m-d h:i:s');
-
     return (new Illuminate\Http\Response(null, 201));
 });

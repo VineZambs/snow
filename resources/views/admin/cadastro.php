@@ -23,4 +23,10 @@
     <button type="submit" name="button" class="btn btn-primary">Cadastrar</button>
 </form>
 
+<script>
+    document.body.onload = function () {
+        $('[name="cpd[data_instalacao]"]').mask('00/00/0000');
+    };
+</script>
+
 

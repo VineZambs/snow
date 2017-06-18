@@ -4,11 +4,12 @@
 <ul class="nav nav-tabs">
     <li><a href="/admin/cpd/<?= $cpd->id ?>">Monitoração</a></li>
     <li class="active"><a href="/admin/cpd/<?= $cpd->id ?>/relatorio">Relatório</a></li>
+    <a href="/admin/cpd/<?= $cpd->id ?>/exportar" class="btn btn-primary" style="float:right">Exportar CSV</a>
 </ul>
 
-<?php if (count($cpd->leituras) > 0): ?>
+<div id="chartContainer"></div>
 
-    <a href="/admin/cpd/<?=$cpd->id?>/exportar" class="btn btn-primary">Exportar CSV</a>
+<?php if (count($cpd->leituras) > 0): ?>
 
     <table class="table">
         <tr>
@@ -29,3 +30,32 @@
     <h4>Não há leituras para esse CPD!</h4>
 
 <?php endif; ?>
+
+<script src="/js/canvasjs.min.js"></script>
+<script type="text/javascript">
+    var dataPoints = <?= $cpd->jsonLeituras() ?>;
+    
+    for(i in dataPoints){
+        dataPoints[i].x = new Date(dataPoints[i].x);
+    }
+    
+    window.onload = function () {
+        var chart = new CanvasJS.Chart("chartContainer",
+                {
+                    theme: "theme2",
+                    animationEnabled: true,
+                    axisY: {
+                        includeZero: false
+                    },
+                    data: [
+                        {
+                            type: "line",
+                            //lineThickness: 3,        
+                            dataPoints: dataPoints
+                        }
+                    ]
+                });
+
+        chart.render();
+    }
+</script>

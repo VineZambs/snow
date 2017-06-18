@@ -1,5 +1,5 @@
 <?php
-$cpds = $usuario->empresa->cpds()->get();
+$listagemCpds = $usuario->empresa->cpds()->get();
 ?>
 
 <!DOCTYPE html>
@@ -28,10 +28,12 @@ $cpds = $usuario->empresa->cpds()->get();
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="/admin/cadastro">Cadastrar CPD</a></li>
-                            <?php foreach ($cpds as $cpd): ?>
+                            <?php $i = 1 ?>
+                            <?php foreach ($listagemCpds as $listagemCpd): ?>
                                 <li>
-                                    <a href="/admin/cpd/<?= $cpd->id ?>">CPD <?= $cpd->numero_serial ?></a>
+                                    <a href="/admin/cpd/<?= $listagemCpd->id ?>">CPD <?=$i?> - <?= $listagemCpd->numero_serial ?></a>
                                 </li>
+                                <?php $i++ ?>
                             <?php endforeach; ?>
                         </ul>
                     </li>
