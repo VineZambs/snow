@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It is a breeze. Simply tell Lumen the URIs it should respond to
-| and give it the Closure to call when that URI is requested.
-|
-*/
-
 use \App\Usuario;
 use \App\Empresa;
 use \App\Cpd;
@@ -26,7 +15,23 @@ $app->get('/cadastro', function () use ($app) {
     return view('site', ['view' => 'cadastro']);
 });
 
-$app->post('/cadastro', function (Request $request) use ($app) {    
+$app->post('/cadastro', function (Request $request) use ($app) {
+    $cpfExistente = Usuario::where('cpf', '=', $request->input('usuario')['cpf'])->count();
+    $emailExistente = Usuario::where('email', '=', $request->input('usuario')['email'])->count();
+    $cnpjExistente = Empresa::where('cnpj', '=', $request->input('empresa')['cnpj'])->count();
+    
+    if($cpfExistente){
+        return view('site', ['view' => 'cadastro-sucesso', 'erro' => 'CPF já cadastrado no sistema.']);
+    }
+    
+    if($emailExistente){
+        return view('site', ['view' => 'cadastro-sucesso', 'erro' => 'E-mail já cadastrado no sistema.']);
+    }
+    
+    if($cnpjExistente){
+        return view('site', ['view' => 'cadastro-sucesso', 'erro' => 'CNPJ já cadastrado no sistema.']);
+    }
+
     $usuario = Usuario::create($request->input('usuario'));
     $usuario->endereco()->create($request->input('usuario_endereco'));
     $usuario->save();
@@ -52,7 +57,7 @@ $app->post('/login', function (Request $request) use ($app) {
         return redirect('/admin/dashboard');
     }
     
-    return view('site', ['view' => 'login']);
+    return view('site', ['view' => 'login', 'erro' => 'E-mail ou senha inválidos.']);
 });
 
 $app->get('/teste', function () use ($app) {
