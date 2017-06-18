@@ -6,26 +6,27 @@
             </div>
         <?php endif ?>
 
+        <h2 class="col-md-12">Dados de Login</h2>
         <div class="row">
-            <div class="row">
-                <h2 class="col-md-12">Dados de Login</h2>
-                <div class="form-group col-md-4">
-                    <label>E-mail</label>
-                    <input type="email" class="form-control" name="usuario[email]" required>
-                </div>
-
-                <div class="form-group col-md-4">
-                    <label>Senha</label>
-                    <input type="password" class="form-control"  name="usuario[senha]" required>
-                </div>
-
-                <div class="form-group col-md-4">
-                    <label>Confirme a Senha</label>
-                    <input type="password" class="form-control" name="confirmar_senha" required>
-                </div>
+            <div class="form-group col-md-4">
+                <label>E-mail</label>
+                <input type="email" class="form-control" name="usuario[email]" required>
             </div>
 
-            <br>
+            <div class="form-group col-md-4">
+                <label>Senha</label>
+                <input type="password" class="form-control"  name="usuario[senha]" required>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Confirme a Senha</label>
+                <input type="password" class="form-control" name="confirmar_senha" required>
+            </div>
+        </div>
+        
+        <br>
+        
+        <div class="row">
             <h2 class="col-md-12">Dados do Contratante</h2>
 
             <div class="form-group col-md-4">
@@ -73,12 +74,11 @@
                 <label>Cidade</label>
                 <input type="text" class="form-control" name="usuario_endereco[cidade]" required>
             </div>
-
         </div>
 
-
+        <br>
+        
         <div class="row">
-            <br>
             <h2 class="col-md-12">Dados da Empresa</h2>
             <div class="form-group col-md-6">
                 <label>Razao Social</label>

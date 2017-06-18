@@ -21,15 +21,15 @@ $app->post('/cadastro', function (Request $request) use ($app) {
     $cnpjExistente = Empresa::where('cnpj', '=', $request->input('empresa')['cnpj'])->count();
     
     if($cpfExistente){
-        return view('site', ['view' => 'cadastro-sucesso', 'erro' => 'CPF já cadastrado no sistema.']);
+        return view('site', ['view' => 'cadastro', 'erro' => 'CPF já cadastrado no sistema.']);
     }
     
     if($emailExistente){
-        return view('site', ['view' => 'cadastro-sucesso', 'erro' => 'E-mail já cadastrado no sistema.']);
+        return view('site', ['view' => 'cadastro', 'erro' => 'E-mail já cadastrado no sistema.']);
     }
     
     if($cnpjExistente){
-        return view('site', ['view' => 'cadastro-sucesso', 'erro' => 'CNPJ já cadastrado no sistema.']);
+        return view('site', ['view' => 'cadastro', 'erro' => 'CNPJ já cadastrado no sistema.']);
     }
 
     $usuario = Usuario::create($request->input('usuario'));
@@ -79,7 +79,13 @@ $app->get('/admin/cadastro', function () use ($app) {
     return view('admin', ['view' => 'cadastro', 'usuario' => Session::user()]);
 });
 
-$app->post('/admin/cadastro', function (Request $request) use ($app) {    
+$app->post('/admin/cadastro', function (Request $request) use ($app) {
+    $serialExistente = Cpd::where('numero_serial', '=', $request->input('cpd')['numero_serial'])->count();
+    
+    if($serialExistente){
+        return view('admin', ['view' => 'cadastro', 'erro' => 'Número serial já cadastrado no sistema.']);
+    }
+    
     $usuario = Session::user();
     $usuario->empresa->cpds()->create($request->input('cpd'));
     
@@ -112,6 +118,28 @@ $app->get('/admin/cpd/{id}/exportar', function ($id) use ($app) {
     file_put_contents('storage/relatorio.csv', $csv);
     
     return response()->download('storage/relatorio.csv');
+});
+
+$app->get('/admin/perfil', function () use ($app) {
+    return view('admin', ['view' => 'perfil', 'usuario' => Session::user()]);
+});
+
+$app->post('/admin/perfil', function (Request $request) use ($app) {
+    $usuario = Session::user();
+    
+    $usuario->fill($request->input('usuario'));
+    $usuario->save();
+    
+    $usuario->endereco->fill($request->input('usuario_endereco'));
+    $usuario->endereco->save();
+    
+    $usuario->empresa->fill($request->input('empresa'));
+    $usuario->empresa->save();
+    
+    $usuario->empresa->endereco->fill($request->input('empresa_endereco'));
+    $usuario->empresa->endereco->save();
+    
+    return view('admin', ['view' => 'perfil', 'usuario' => $usuario, 'sucesso' => 'Os dados foram atualizados!']);
 });
 
 /** Api **/

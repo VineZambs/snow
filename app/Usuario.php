@@ -9,13 +9,9 @@ class Usuario extends Model
     public $timestamps = false;
     
     protected $fillable = [
-        'nome', 'cpf', 'email', 'senha'
+        'nome', 'cpf', 'rg', 'email', 'senha'
     ];
 
-    protected $hidden = [
-        'password',
-    ];
-    
     public function endereco()
     {
         return $this->hasOne('App\Endereco');

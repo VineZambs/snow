@@ -1,6 +1,12 @@
 <form method="post">
 
     <div class="row">
+        <?php if (isset($erro)): ?>
+            <div class="row">
+                <div class="alert alert-danger"><?= $erro ?></div>
+            </div>
+        <?php endif ?>
+        
         <h2 class="col-md-12">Cadastro de CPD</h2>
 
         <div class="form-group col-md-6">

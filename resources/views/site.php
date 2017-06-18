@@ -86,12 +86,8 @@
 
         <?php include "site/$view.php" ?>
 
-        <!-- jQuery -->
         <script src="/js/jquery.js"></script>
-
         <script src="/js/jquery.mask.min.js"></script>
-
-        <!-- Bootstrap Core JavaScript -->
         <script src="/js/bootstrap.min.js"></script>
     </body>
 </html>
