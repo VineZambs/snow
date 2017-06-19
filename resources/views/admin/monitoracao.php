@@ -18,7 +18,7 @@
 
     <div class="col-md-6">
         <canvas id="gauge-humidade"></canvas>
-        <p class="gauge-title">Humidade: <?= number_format($leitura_atual->humidade * 100, 2, ',', '') ?>%</p>
+        <p class="gauge-title">Humidade: <?= number_format($leitura_atual->humidade, 2, ',', '') ?>%</p>
     </div>
 
     <p style="float: right">Última leitura: <?=date('d/m/Y h:i:s', strtotime($leitura_atual->horario))?>
@@ -55,7 +55,7 @@
         opts.colorStop = '#920';
 
         var gaugeHumidade = new Gauge(document.getElementById('gauge-humidade')).setOptions(opts); // create sexy gauge!
-        gaugeHumidade.maxValue = 1; // set max gauge value
+        gaugeHumidade.maxValue = 100; // set max gauge value
         gaugeHumidade.setMinValue(0);  // Prefer setter over gauge.minValue = 0
         gaugeHumidade.animationSpeed = 10; // set animation speed (32 is default value)
         gaugeHumidade.set(<?= $leitura_atual->humidade ?>); // set actual value
