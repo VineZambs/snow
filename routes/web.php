@@ -111,7 +111,7 @@ $app->get('/admin/cpd/{id}/exportar', function ($id) use ($app) {
     $csv = "data;temperatura;humidade\n";
     
     foreach($cpd->leituras as $leitura){
-        $horario = date('d/m/Y h:i:s', $leitura->horario);
+        $horario = date('d/m/Y h:i:s', strtotime($leitura->horario));
         $csv .= "$horario;$leitura->temperatura;$leitura->humidade\n";
     }
     
