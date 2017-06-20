@@ -15,15 +15,15 @@
         <tr>
             <th>Número Serial</th>
             <th>Cliente</th>
-            <th>Data de Cadastro</th>
+            <th>Data de Instalação</th>
         </tr>
         <?php foreach ($cpds as $cpd): ?>
             <tr>
                 <td><?= $cpd->numero_serial ?></td>
 
-                <?php if($cpd->cliente): ?>
-
-
+                <?php if($cpd->empresa): ?>
+                    <td><?=$cpd->empresa->razao_social?></td>
+                    <td><?=$cpd->data_instalacao?></td>
                 <?php else: ?>
                     <td>Não cadastrado</td>
                     <td>Não cadastrado</td>

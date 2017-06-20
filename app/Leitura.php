@@ -10,6 +10,6 @@ class Leitura extends Model
     protected $table = 'cpd_leitura';
 
     protected $fillable = [
-        'temperatura', 'humidade', 'horario'
+        'temperatura', 'umidade', 'horario'
     ];
 }

@@ -15,6 +15,10 @@ class Cpd extends Model {
         return $this->hasMany('App\Leitura');
     }
 
+    public function empresa() {
+        return $this->belongsTo('App\Empresa');
+    }
+
     public function getDataInstalacaoAttribute($value) {
         $time = strtotime($value);
 
@@ -41,13 +45,28 @@ class Cpd extends Model {
         $this->attributes['data_instalacao'] = $data;
     }
 
-    public function jsonLeituras(){
+    public function jsonTemperatura(){
         $pontos = [];
 
         foreach($this->leituras as $leitura){
             $ponto = [
                 'x' => $leitura->horario,
                 'y' => $leitura->temperatura
+            ];
+
+            $pontos[] = $ponto;
+        }
+
+        return json_encode($pontos);
+    }
+
+    public function jsonUmidade(){
+        $pontos = [];
+
+        foreach($this->leituras as $leitura){
+            $ponto = [
+                'x' => $leitura->horario,
+                'y' => $leitura->umidade
             ];
 
             $pontos[] = $ponto;

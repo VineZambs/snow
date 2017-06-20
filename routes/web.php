@@ -162,7 +162,7 @@ $app->get('/admin/clientes', function () use ($app) {
 });
 
 $app->get('/admin/cpds', function () use ($app) {
-    $cpds = Cpd::orderBy('data_instalacao', 'desc')->get();
+    $cpds = Cpd::orderBy('id', 'desc')->get();
 
     return view('admin', ['view' => 'cpds', 'usuario' => Session::user(), 'cpds' => $cpds]);
 });
@@ -180,7 +180,7 @@ $app->post('/admin/cpds/novo', function (Request $request) use ($app) {
 
     $cpd = Cpd::create($request->input('cpd'));
 
-    $cpds = Cpd::orderBy('data_instalacao', 'desc')->get();
+    $cpds = Cpd::orderBy('id', 'desc')->get();
 
     return view('admin', ['view' => 'cpds', 'usuario' => Session::user(), 'cpds' => $cpds, 'sucesso' => 'O CPD foi cadastrado com sucesso.']);
 });

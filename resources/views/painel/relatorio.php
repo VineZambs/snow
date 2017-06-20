@@ -33,10 +33,15 @@
 
 <script src="/js/canvasjs.min.js"></script>
 <script type="text/javascript">
-    var dataPoints = <?= $cpd->jsonLeituras() ?>;
+    var pontosTemperatura = <?= $cpd->jsonTemperatura() ?>;
+    var pontosUmidade = <?= $cpd->jsonUmidade() ?>;
 
-    for(i in dataPoints){
-        dataPoints[i].x = new Date(dataPoints[i].x);
+    for(i in pontosTemperatura){
+        pontosTemperatura[i].x = new Date(pontosTemperatura[i].x);
+    }
+
+    for(i in pontosUmidade){
+        pontosUmidade[i].x = new Date(pontosUmidade[i].x);
     }
 
     window.onload = function () {
@@ -49,10 +54,19 @@
                     },
                     data: [
                         {
+                            name: "Temperatura (C)",
+                            showInLegend: true,
                             type: "line",
-                            //lineThickness: 3,
-                            dataPoints: dataPoints
-                        }
+                            color: "red",
+                            dataPoints: pontosTemperatura
+                        },
+                        {
+                            name: "Umidade (%)",
+                            showInLegend: true,
+                            type: "line",
+                            color: "blue",
+                            dataPoints: pontosUmidade
+                        },
                     ]
                 });
 

@@ -25,43 +25,40 @@
 
     <script src="/js/gauge.min.js"></script>
     <script>
-        /* Gauge Temperatura */
-        var opts = {
-            angle: 0.15, // The span of the gauge arc
-            lineWidth: 0.2, // The line thickness
-            radiusScale: 1, // Relative radius
-            pointer: {
-                length: 0.6, // // Relative to gauge radius
-                strokeWidth: 0.035, // The thickness
-                color: '#000000' // Fill color
-            },
-            limitMax: false, // If false, the max value of the gauge will be updated if value surpass max
-            limitMin: false, // If true, the min value of the gauge will be fixed unless you set it manually
-            colorStart: '#0FADCF', // Colors
-            colorStop: '#8FC0DA', // just experiment with them
-            strokeColor: '#E0E0E0', // to see which ones work best for you
-            generateGradient: true,
-            highDpiSupport: true     // High resolution support
-        };
+        function fabricarGauge(elemento, valorMaximo, valorAtual){
+            var opts = {
+                angle: 0.15,
+                lineWidth: 0.2,
+                radiusScale: 1,
+                pointer: {
+                    length: 0.6,
+                    strokeWidth: 0.035,
+                    color: '#000000'
+                },
+                limitMax: false,
+                limitMin: false,
+                strokeColor: '#E0E0E0',
+                generateGradient: true,
+                highDpiSupport: true,
+                staticZones:[]
+            }
 
-        var gaugeTemperatura = new Gauge(document.getElementById('gauge-temperatura')).setOptions(opts); // create sexy gauge!
-        gaugeTemperatura.maxValue = 60; // set max gauge value
-        gaugeTemperatura.setMinValue(0);  // Prefer setter over gauge.minValue = 0
-        gaugeTemperatura.animationSpeed = 32; // set animation speed (32 is default value)
-        gaugeTemperatura.set(<?= $leitura_atual->temperatura ?>); // set actual value
+            opts.staticZones.push({strokeStyle: "green", min: 0, max: valorMaximo * 0.6});
+            opts.staticZones.push({strokeStyle: "yellow", min: valorMaximo * 0.6, max: valorMaximo * 0.8});
+            opts.staticZones.push({strokeStyle: "red", min: valorMaximo * 0.8, max: valorMaximo});
 
-        /* Gauge Umidade */
-        opts.colorStart = '#920';
-        opts.colorStop = '#920';
+            var gauge = new Gauge(elemento).setOptions(opts);
 
-        var gaugeUmidade = new Gauge(document.getElementById('gauge-umidade')).setOptions(opts); // create sexy gauge!
-        gaugeUmidade.maxValue = 100; // set max gauge value
-        gaugeUmidade.setMinValue(0);  // Prefer setter over gauge.minValue = 0
-        gaugeUmidade.animationSpeed = 10; // set animation speed (32 is default value)
-        gaugeUmidade.set(<?= $leitura_atual->umidade ?>); // set actual value
+            gauge.maxValue = valorMaximo
+            gauge.set(valorAtual);
+
+            return gauge;
+        }
+
+        var gaugeTemperatura =  fabricarGauge(document.getElementById('gauge-temperatura'), <?=$cpd->temperatura_max?>, <?= $leitura_atual->temperatura ?>)
+        var gaugeUmidade =  fabricarGauge(document.getElementById('gauge-umidade'), <?=$cpd->umidade_max?>, <?= $leitura_atual->umidade ?>)
     </script>
 
 <?php else: ?>
     <h4>Não há leituras para esse CPD!</h4>
-
 <?php endif; ?>
