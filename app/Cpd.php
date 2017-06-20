@@ -8,7 +8,7 @@ class Cpd extends Model {
 
     public $timestamps = false;
     protected $fillable = [
-        'numero_serial', 'data_instalacao'
+        'numero_serial', 'data_instalacao', 'umidade_max', 'temperatura_max'
     ];
 
     public function leituras() {
@@ -27,32 +27,32 @@ class Cpd extends Model {
 
     public function setDataInstalacaoAttribute($value) {
         $partesData = explode('/', $value);
-        
+
         if (count($partesData) != 3) {
             return;
         }
 
         $data = $partesData[2] . '-' . $partesData[1] . '-' . $partesData[0];
-        
+
         if(!strtotime($data)){
             return;
         }
-        
+
         $this->attributes['data_instalacao'] = $data;
     }
-    
+
     public function jsonLeituras(){
         $pontos = [];
-        
+
         foreach($this->leituras as $leitura){
             $ponto = [
                 'x' => $leitura->horario,
                 'y' => $leitura->temperatura
             ];
-            
+
             $pontos[] = $ponto;
         }
-        
+
         return json_encode($pontos);
     }
 

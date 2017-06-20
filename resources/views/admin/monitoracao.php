@@ -17,8 +17,8 @@
     </div>
 
     <div class="col-md-6">
-        <canvas id="gauge-humidade"></canvas>
-        <p class="gauge-title">Humidade: <?= number_format($leitura_atual->humidade, 2, ',', '') ?>%</p>
+        <canvas id="gauge-umidade"></canvas>
+        <p class="gauge-title">Umidade: <?= number_format($leitura_atual->umidade, 2, ',', '') ?>%</p>
     </div>
 
     <p style="float: right">Última leitura: <?=date('d/m/Y h:i:s', strtotime($leitura_atual->horario))?>
@@ -50,15 +50,15 @@
         gaugeTemperatura.animationSpeed = 32; // set animation speed (32 is default value)
         gaugeTemperatura.set(<?= $leitura_atual->temperatura ?>); // set actual value
 
-        /* Gauge Humidade */
+        /* Gauge Umidade */
         opts.colorStart = '#920';
         opts.colorStop = '#920';
 
-        var gaugeHumidade = new Gauge(document.getElementById('gauge-humidade')).setOptions(opts); // create sexy gauge!
-        gaugeHumidade.maxValue = 100; // set max gauge value
-        gaugeHumidade.setMinValue(0);  // Prefer setter over gauge.minValue = 0
-        gaugeHumidade.animationSpeed = 10; // set animation speed (32 is default value)
-        gaugeHumidade.set(<?= $leitura_atual->humidade ?>); // set actual value
+        var gaugeUmidade = new Gauge(document.getElementById('gauge-umidade')).setOptions(opts); // create sexy gauge!
+        gaugeUmidade.maxValue = 100; // set max gauge value
+        gaugeUmidade.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+        gaugeUmidade.animationSpeed = 10; // set animation speed (32 is default value)
+        gaugeUmidade.set(<?= $leitura_atual->umidade ?>); // set actual value
     </script>
 
 <?php else: ?>

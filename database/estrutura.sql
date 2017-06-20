@@ -5,7 +5,8 @@ CREATE TABLE usuarios(
     nome VARCHAR(255) NOT NULL,
     data_nascimento DATE NOT NULL,
     rg VARCHAR(255) NOT NULL,
-    cpf VARCHAR(255) NOT NULL UNIQUE
+    cpf VARCHAR(255) NOT NULL UNIQUE,
+    tipo INT NOT NULL DEFAULT 1
 );
 
 CREATE TABLE empresas(
@@ -31,14 +32,16 @@ CREATE TABLE cpds(
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     empresa_id INT,
     numero_serial VARCHAR(255) NOT NULL,
-    data_instalacao DATE NOT NULL
+    temperatura_max FLOAT,
+    umidade_max FLOAT,
+    data_instalacao DATE
 );
 
 CREATE TABLE cpd_leitura(
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     cpd_id INT,
     temperatura FLOAT NOT NULL,
-    humidade FLOAT NOT NULL,
+    umidade FLOAT NOT NULL,
     horario DATETIME NOT NULL
 );
 

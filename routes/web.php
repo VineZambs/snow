@@ -108,11 +108,11 @@ $app->get('/admin/cpd/{id}/relatorio', function ($id) use ($app) {
 
 $app->get('/admin/cpd/{id}/exportar', function ($id) use ($app) {
     $cpd = Cpd::find($id);
-    $csv = "data;temperatura;humidade\n";
+    $csv = "data;temperatura;umidade\n";
 
     foreach($cpd->leituras as $leitura){
         $horario = date('d/m/Y h:i:s', strtotime($leitura->horario));
-        $csv .= "$horario;$leitura->temperatura;$leitura->humidade\n";
+        $csv .= "$horario;$leitura->temperatura;$leitura->umidade\n";
     }
 
     file_put_contents('storage/relatorio.csv', $csv);
@@ -154,7 +154,7 @@ $app->post('/api/leitura', function (Request $request) use ($app) {
 
     $cpd->leituras()->create([
         'temperatura' => $request->input('temperatura'),
-        'humidade' => $request->input('humidade'),
+        'umidade' => $request->input('umidade'),
         'horario' => date('Y-m-d h:i:s')
     ]);
 
