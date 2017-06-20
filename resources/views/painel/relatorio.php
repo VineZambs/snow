@@ -2,9 +2,9 @@
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
-    <li><a href="/admin/cpd/<?= $cpd->id ?>">Monitoração</a></li>
-    <li class="active"><a href="/admin/cpd/<?= $cpd->id ?>/relatorio">Relatório</a></li>
-    <a href="/admin/cpd/<?= $cpd->id ?>/exportar" class="btn btn-primary" style="float:right">Exportar CSV</a>
+    <li><a href="/painel/cpd/<?= $cpd->id ?>">Monitoração</a></li>
+    <li class="active"><a href="/painel/cpd/<?= $cpd->id ?>/relatorio">Relatório</a></li>
+    <a href="/painel/cpd/<?= $cpd->id ?>/exportar" class="btn btn-primary" style="float:right">Exportar CSV</a>
 </ul>
 
 <div id="chartContainer"></div>

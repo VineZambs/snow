@@ -50,3 +50,5 @@ ALTER TABLE enderecos ADD FOREIGN KEY (usuario_id) REFERENCES usuarios(id);
 ALTER TABLE enderecos ADD FOREIGN KEY (empresa_id) REFERENCES empresas(id);
 ALTER TABLE empresas ADD FOREIGN KEY (usuario_id) REFERENCES usuarios(id);
 ALTER TABLE cpd_leitura ADD FOREIGN KEY (cpd_id) REFERENCES cpds(id);
+
+INSERT INTO usuarios (id, email, senha, nome, data_nascimento, rg, cpf, tipo) VALUES (1, 'admin@snow.com', 'pegasus25', 'admin', '2017-01-01', '111', '111', 2);

@@ -1,3 +1,7 @@
+<?php
+$listagemCpds = $usuario->empresa->cpds()->get();
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,14 +22,24 @@
                     </span>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a href="/admin/clientes">
-                            Clientes
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            CPD's <span class="caret"></span>
                         </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/painel/cadastro">Cadastrar CPD</a></li>
+                            <?php $i = 1 ?>
+                            <?php foreach ($listagemCpds as $listagemCpd): ?>
+                                <li>
+                                    <a href="/painel/cpd/<?= $listagemCpd->id ?>">CPD <?=$i?> - <?= $listagemCpd->numero_serial ?></a>
+                                </li>
+                                <?php $i++ ?>
+                            <?php endforeach; ?>
+                        </ul>
                     </li>
                     <li>
-                        <a href="/admin/cpds">
-                            CPDs
+                        <a href="/painel/perfil">
+                            Meus Dados
                         </a>
                     </li>
                 </ul>
@@ -41,7 +55,7 @@
         </nav>
 
         <div class="container">
-            <?php include("admin/$view.php") ?>
+            <?php include("painel/$view.php") ?>
         </div>
 
         <script src="/js/jquery.js"></script>

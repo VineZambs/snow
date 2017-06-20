@@ -54,7 +54,12 @@ $app->post('/login', function (Request $request) use ($app) {
 
     if($usuario && $usuario->senha == $request->input('senha')){
         Session::login($usuario);
-        return redirect('/admin/dashboard');
+
+        if($usuario->tipo == Usuario::ADMIN){
+            return redirect('/admin/home');
+        }else{
+            return redirect('/painel/dashboard');
+        }
     }
 
     return view('site', ['view' => 'login', 'erro' => 'E-mail ou senha inválidos.']);
@@ -64,49 +69,50 @@ $app->get('/teste', function () use ($app) {
     return view('teste');
 });
 
-/** Admin **/
-$app->get('/admin/dashboard', function () use ($app) {
-    return view('admin', ['view' => 'dashboard', 'usuario' => Session::user()]);
+/** Painel **/
+$app->get('/painel/dashboard', function () use ($app) {
+    return view('painel', ['view' => 'dashboard', 'usuario' => Session::user()]);
 });
 
-$app->get('/admin/logout', function () use ($app) {
+$app->get('/painel/logout', function () use ($app) {
     Session::logout();
 
     return redirect('/');
 });
 
-$app->get('/admin/cadastro', function () use ($app) {
-    return view('admin', ['view' => 'cadastro', 'usuario' => Session::user()]);
+$app->get('/painel/cadastro', function () use ($app) {
+    return view('painel', ['view' => 'cadastro', 'usuario' => Session::user()]);
 });
 
-$app->post('/admin/cadastro', function (Request $request) use ($app) {
-    $serialExistente = Cpd::where('numero_serial', '=', $request->input('cpd')['numero_serial'])->count();
+$app->post('/painel/cadastro', function (Request $request) use ($app) {
+    $cpd = Cpd::where('numero_serial', '=', $request->input('cpd')['numero_serial'])->first();
 
-    if($serialExistente){
-        return view('admin', ['view' => 'cadastro', 'usuario' => Session::user(), 'erro' => 'Número serial já cadastrado no sistema.']);
+    if(!$cpd){
+        return view('painel', ['view' => 'cadastro', 'usuario' => Session::user(), 'erro' => 'Número serial não disponível no sistema.']);
     }
 
+    $cpd->fill($request->input('cpd'));
+    $cpd->save();
+
     $usuario = Session::user();
-    $usuario->empresa->cpds()->create($request->input('cpd'));
+    $usuario->empresa->cpds()->save($cpd);
 
-    $cpd = $usuario->empresa->cpds()->where('numero_serial', '=', $request->input('cpd')['numero_serial'])->first();
-
-    return view('admin', ['view' => 'cadastro-sucesso', 'cpd' => $cpd, 'usuario' => Session::user()]);
+    return view('painel', ['view' => 'cadastro-sucesso', 'cpd' => $cpd, 'usuario' => Session::user()]);
 });
 
-$app->get('/admin/cpd/{id}', function ($id) use ($app) {
+$app->get('/painel/cpd/{id}', function ($id) use ($app) {
     $cpd = Cpd::find($id);
 
-    return view('admin', ['view' => 'monitoracao', 'usuario' => Session::user(), 'cpd' => $cpd]);
+    return view('painel', ['view' => 'monitoracao', 'usuario' => Session::user(), 'cpd' => $cpd]);
 });
 
-$app->get('/admin/cpd/{id}/relatorio', function ($id) use ($app) {
+$app->get('/painel/cpd/{id}/relatorio', function ($id) use ($app) {
     $cpd = Cpd::find($id);
 
-    return view('admin', ['view' => 'relatorio', 'usuario' => Session::user(), 'cpd' => $cpd]);
+    return view('painel', ['view' => 'relatorio', 'usuario' => Session::user(), 'cpd' => $cpd]);
 });
 
-$app->get('/admin/cpd/{id}/exportar', function ($id) use ($app) {
+$app->get('/painel/cpd/{id}/exportar', function ($id) use ($app) {
     $cpd = Cpd::find($id);
     $csv = "data;temperatura;umidade\n";
 
@@ -120,11 +126,11 @@ $app->get('/admin/cpd/{id}/exportar', function ($id) use ($app) {
     return response()->download('storage/relatorio.csv');
 });
 
-$app->get('/admin/perfil', function () use ($app) {
-    return view('admin', ['view' => 'perfil', 'usuario' => Session::user()]);
+$app->get('/painel/perfil', function () use ($app) {
+    return view('painel', ['view' => 'perfil', 'usuario' => Session::user()]);
 });
 
-$app->post('/admin/perfil', function (Request $request) use ($app) {
+$app->post('/painel/perfil', function (Request $request) use ($app) {
     $usuario = Session::user();
 
     $usuario->fill($request->input('usuario'));
@@ -141,7 +147,42 @@ $app->post('/admin/perfil', function (Request $request) use ($app) {
 
     Session::login($usuario);
 
-    return view('admin', ['view' => 'perfil', 'usuario' => $usuario, 'sucesso' => 'Os dados foram atualizados!']);
+    return view('painel', ['view' => 'perfil', 'usuario' => $usuario, 'sucesso' => 'Os dados foram atualizados!']);
+});
+
+/** Admin **/
+$app->get('/admin/home', function () use ($app) {
+    return view('admin', ['view' => 'home', 'usuario' => Session::user()]);
+});
+
+$app->get('/admin/clientes', function () use ($app) {
+    $clientes = Usuario::where('tipo', '=', Usuario::CLIENTE)->get();
+
+    return view('admin', ['view' => 'clientes', 'usuario' => Session::user(), 'clientes' => $clientes]);
+});
+
+$app->get('/admin/cpds', function () use ($app) {
+    $cpds = Cpd::orderBy('data_instalacao', 'desc')->get();
+
+    return view('admin', ['view' => 'cpds', 'usuario' => Session::user(), 'cpds' => $cpds]);
+});
+
+$app->get('/admin/cpds/novo', function () use ($app) {
+    return view('admin', ['view' => 'novo-cpd', 'usuario' => Session::user()]);
+});
+
+$app->post('/admin/cpds/novo', function (Request $request) use ($app) {
+    $serialExistente = Cpd::where('numero_serial', '=', $request->input('cpd')['numero_serial'])->count();
+
+    if($serialExistente){
+        return view('admin', ['view' => 'novo-cpd', 'usuario' => Session::user(), 'erro' => 'Serial já cadastrado no sistema.']);
+    }
+
+    $cpd = Cpd::create($request->input('cpd'));
+
+    $cpds = Cpd::orderBy('data_instalacao', 'desc')->get();
+
+    return view('admin', ['view' => 'cpds', 'usuario' => Session::user(), 'cpds' => $cpds, 'sucesso' => 'O CPD foi cadastrado com sucesso.']);
 });
 
 /** Api **/

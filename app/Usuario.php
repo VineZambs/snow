@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usuario extends Model
 {
-    public $timestamps = false;
+    const ADMIN = 2;
+    const CLIENTE = 1;
     
+    public $timestamps = false;
+
     protected $fillable = [
         'nome', 'cpf', 'rg', 'email', 'senha'
     ];
@@ -16,7 +19,7 @@ class Usuario extends Model
     {
         return $this->hasOne('App\Endereco');
     }
-    
+
     public function empresa()
     {
         return $this->hasOne('App\Empresa');
