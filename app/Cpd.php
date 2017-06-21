@@ -8,7 +8,7 @@ class Cpd extends Model {
 
     public $timestamps = false;
     protected $fillable = [
-        'numero_serial', 'data_instalacao', 'umidade_max', 'temperatura_max'
+        'numero_serial', 'data_instalacao', 'umidade_max', 'temperatura_max', 'umidade_min', 'temperatura_min'
     ];
 
     public function leituras() {

@@ -23,9 +23,9 @@
                 <input type="password" class="form-control" name="confirmar_senha" required>
             </div>
         </div>
-        
+
         <br>
-        
+
         <div class="row">
             <h2 class="col-md-12">Dados do Contratante</h2>
 
@@ -66,18 +66,18 @@
             </div>
 
             <div class="form-group col-md-2">
-                <label>Estado</label>
-                <input type="text" class="form-control" name="usuario_endereco[estado]" required>
+                <label>Cidade</label>
+                <input type="text" class="form-control" name="usuario_endereco[cidade]" required>
             </div>
 
             <div class="form-group col-md-2">
-                <label>Cidade</label>
-                <input type="text" class="form-control" name="usuario_endereco[cidade]" required>
+                <label>Estado</label>
+                <input type="text" class="form-control" name="usuario_endereco[estado]" required>
             </div>
         </div>
 
         <br>
-        
+
         <div class="row">
             <h2 class="col-md-12">Dados da Empresa</h2>
             <div class="form-group col-md-6">
@@ -111,19 +111,20 @@
             </div>
 
             <div class="form-group col-md-2">
-                <label>Estado</label>
-                <input type="text" class="form-control" name="empresa_endereco[estado]" required>
+                <label>Cidade</label>
+                <input type="text" class="form-control" name="empresa_endereco[cidade]" required>
             </div>
 
             <div class="form-group col-md-2">
-                <label>Cidade</label>
-                <input type="text" class="form-control" name="empresa_endereco[cidade]" required>
+                <label>Estado</label>
+                <input type="text" class="form-control" name="empresa_endereco[estado]" required>
             </div>
         </div>
 
         <button type="submit" name="button" class="btn btn-primary">Cadastrar</button>
     </form>
 
+    <br><br>
 </section>
 
 <script>

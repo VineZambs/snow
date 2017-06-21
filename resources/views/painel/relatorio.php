@@ -52,6 +52,9 @@
                     axisY: {
                         includeZero: false
                     },
+                    legend:{
+                        fontSize: 24
+                    },
                     data: [
                         {
                             name: "Temperatura (C)",

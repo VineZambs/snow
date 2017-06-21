@@ -1,9 +1,11 @@
-<div class="col-md-8">
-    <h2>CPDs</h2>
-</div>
+<div class="row">
+    <div class="col-md-10">
+        <h2>CPDs</h2>
+    </div>
 
-<div class="col-md-4">
-    <a class="btn btn-primary header-button" href="/admin/cpds/novo">Novo CPD</a>
+    <div class="col-md-2">
+        <a class="btn btn-primary header-button" href="/admin/cpds/novo">Novo CPD</a>
+    </div>
 </div>
 
 <?php if (isset($sucesso)): ?>

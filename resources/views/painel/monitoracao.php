@@ -1,9 +1,16 @@
+<?php $leitura_atual = $cpd->leituras()->orderBy('horario', 'desc')->first() ?>
+
 <h2>CPD <?= $cpd->numero_serial ?></h2>
 
-<?php if (count($cpd->leituras) > 0): ?>
+<?php if ($leitura_atual->temperatura < $cpd->temperatura_min || $leitura_atual->temperatura > $cpd->temperatura_max): ?>
+    <div class="alert alert-danger">Atenção. A temperatura do CPD está fora dos valores definidos!</div>
+<?php endif ?>
 
-    <?php $leitura_atual = $cpd->leituras[0] ?>
+<?php if ($leitura_atual->umidade < $cpd->umidade_min || $leitura_atual->umidade > $cpd->umidade_max): ?>
+    <div class="alert alert-danger">Atenção. A umidade do CPD está fora dos valores definidos!</div>
+<?php endif ?>
 
+<?php if ($leitura_atual): ?>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
         <li class="active"><a href="/painel/cpd/<?= $cpd->id ?>">Monitoração</a></li>
@@ -25,7 +32,7 @@
 
     <script src="/js/gauge.min.js"></script>
     <script>
-        function fabricarGauge(elemento, valorMaximo, valorAtual){
+        function fabricarGauge(elemento, valorMinimo, valorMaximo, valorAtual){
             var opts = {
                 angle: 0.15,
                 lineWidth: 0.2,
@@ -43,20 +50,20 @@
                 staticZones:[]
             }
 
-            opts.staticZones.push({strokeStyle: "green", min: 0, max: valorMaximo * 0.6});
-            opts.staticZones.push({strokeStyle: "yellow", min: valorMaximo * 0.6, max: valorMaximo * 0.8});
-            opts.staticZones.push({strokeStyle: "red", min: valorMaximo * 0.8, max: valorMaximo});
+            opts.staticZones.push({strokeStyle: "red", min: 0, max: valorMinimo});
+            opts.staticZones.push({strokeStyle: "green", min: valorMinimo, max: valorMaximo});
+            opts.staticZones.push({strokeStyle: "red", min: valorMaximo, max: 100});
 
             var gauge = new Gauge(elemento).setOptions(opts);
 
-            gauge.maxValue = valorMaximo
+            gauge.maxValue = 100;
             gauge.set(valorAtual);
 
             return gauge;
         }
 
-        var gaugeTemperatura =  fabricarGauge(document.getElementById('gauge-temperatura'), <?=$cpd->temperatura_max?>, <?= $leitura_atual->temperatura ?>)
-        var gaugeUmidade =  fabricarGauge(document.getElementById('gauge-umidade'), <?=$cpd->umidade_max?>, <?= $leitura_atual->umidade ?>)
+        var gaugeTemperatura =  fabricarGauge(document.getElementById('gauge-temperatura'), <?=$cpd->temperatura_min?>, <?=$cpd->temperatura_max?>, <?= $leitura_atual->temperatura ?>)
+        var gaugeUmidade =  fabricarGauge(document.getElementById('gauge-umidade'), <?=$cpd->umidade_min?>, <?=$cpd->umidade_max?>, <?= $leitura_atual->umidade ?>)
     </script>
 
 <?php else: ?>

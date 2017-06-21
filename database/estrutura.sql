@@ -32,7 +32,9 @@ CREATE TABLE cpds(
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     empresa_id INT,
     numero_serial VARCHAR(255) NOT NULL,
+    temperatura_min FLOAT,
     temperatura_max FLOAT,
+    umidade_min FLOAT,
     umidade_max FLOAT,
     data_instalacao DATE
 );
