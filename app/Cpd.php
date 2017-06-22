@@ -45,34 +45,4 @@ class Cpd extends Model {
         $this->attributes['data_instalacao'] = $data;
     }
 
-    public function jsonTemperatura(){
-        $pontos = [];
-
-        foreach($this->leituras as $leitura){
-            $ponto = [
-                'x' => $leitura->horario,
-                'y' => $leitura->temperatura
-            ];
-
-            $pontos[] = $ponto;
-        }
-
-        return json_encode($pontos);
-    }
-
-    public function jsonUmidade(){
-        $pontos = [];
-
-        foreach($this->leituras as $leitura){
-            $ponto = [
-                'x' => $leitura->horario,
-                'y' => $leitura->umidade
-            ];
-
-            $pontos[] = $ponto;
-        }
-
-        return json_encode($pontos);
-    }
-
 }
