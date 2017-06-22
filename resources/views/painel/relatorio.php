@@ -5,12 +5,13 @@ $filtrarUmidade = array_search('umidade', $filtros) !== false;
 
 if ($filtrarFalhas) {
     $leituras = $cpd->leituras()
-            ->where('temperatura', '>', $cpd->temperatura_max)
-            ->orWhere('temperatura', '<', $cpd->temperatura_min)
-            ->orWhere('umidade', '>', $cpd->umidade_max)
-            ->orWhere('umidade', '<', $cpd->umidade_min)
-            ->orderBy('horario', 'desc')
-            ->get();
+                ->where(function($query) use ($cpd){
+                    $query->where('temperatura', '>', $cpd->temperatura_max)
+                    ->orWhere('temperatura', '<', $cpd->temperatura_min)
+                    ->orWhere('umidade', '>', $cpd->umidade_max)
+                    ->orWhere('umidade', '<', $cpd->umidade_min)
+                    ->orderBy('horario', 'desc');
+                })->get();
 } else {
     $leituras = $cpd->leituras()->orderBy('horario', 'desc')->get();
 }
@@ -122,25 +123,25 @@ if ($filtrarFalhas) {
                 });
 
         chart.render();
-        
+
         $('[type=checkbox]').click(filtrar);
     }
-    
-    
-    
+
+
+
     function filtrar(){
         var checkboxes = document.querySelectorAll('[type=checkbox]');
         var filtros = [];
-        
+
         for(i in checkboxes){
             var checkbox = checkboxes[i];
-            
+
             console.log(checkbox)
             if(checkbox.checked){
                 filtros.push(checkbox.value)
             }
         }
-        
+
         window.location = '/painel/cpd/<?= $cpd->id ?>/relatorio?filtros=' + filtros.join(',');
     }
 </script>
