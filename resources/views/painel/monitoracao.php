@@ -1,16 +1,15 @@
 <?php $leitura_atual = $cpd->leituras()->orderBy('horario', 'desc')->first() ?>
 
 <h2>CPD <?= $cpd->numero_serial ?></h2>
-
-<?php if ($leitura_atual->temperatura < $cpd->temperatura_min || $leitura_atual->temperatura > $cpd->temperatura_max): ?>
-    <div class="alert alert-danger">Atenção. A temperatura do CPD está fora dos valores definidos!</div>
-<?php endif ?>
-
-<?php if ($leitura_atual->umidade < $cpd->umidade_min || $leitura_atual->umidade > $cpd->umidade_max): ?>
-    <div class="alert alert-danger">Atenção. A umidade do CPD está fora dos valores definidos!</div>
-<?php endif ?>
-
 <?php if ($leitura_atual): ?>
+    <?php if ($leitura_atual->temperatura < $cpd->temperatura_min || $leitura_atual->temperatura > $cpd->temperatura_max): ?>
+        <div class="alert alert-danger">Atenção. A temperatura do CPD está fora dos valores definidos!</div>
+    <?php endif ?>
+
+    <?php if ($leitura_atual->umidade < $cpd->umidade_min || $leitura_atual->umidade > $cpd->umidade_max): ?>
+        <div class="alert alert-danger">Atenção. A umidade do CPD está fora dos valores definidos!</div>
+    <?php endif ?>
+
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
         <li class="active"><a href="/painel/cpd/<?= $cpd->id ?>">Monitoração</a></li>
