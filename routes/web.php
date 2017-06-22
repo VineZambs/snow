@@ -224,7 +224,12 @@ $app->post('/api/leitura', function (Request $request) use ($app) {
     
     if ($leitura && $leitura->inadequada()) {
         $mailer = new App\Mailer();
-        $mailer->send($cpd, $leitura);
+        
+        try{
+            $mailer->send($cpd, $leitura);
+        }catch(\Swift_TransportException $e){
+            
+        }
     }
 
     return (new Illuminate\Http\Response(null, 201));
