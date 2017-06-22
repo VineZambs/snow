@@ -220,18 +220,18 @@ $app->post('/api/leitura', function (Request $request) use ($app) {
         'horario' => date('Y-m-d h:i:s')
     ]);
 
-    $leitura = array_pop($cpd->leituras);
-    
-    if ($leitura && $leitura->inadequada()) {
-        $usuario = $cpd->empresa->usuario;
-        
-        SimpleMail::make()
-                ->setTo($usuario->email, $usuario->nome)
-                ->setFrom('noreply@snow.com', 'Snow')
-                ->setSubject('Atenção! Seu CPD está com medições inadequadas.')
-                ->setMessage("<p>O CPD $cpd->numero->serial está registrando medições inadequadas</p><p>Temperatura: $leitura->temperatura / Umidade: $leitura->umidade</p>")
-                ->send();
-    }
+//    $leitura = $cpd->leituras()->orderBy('horario', 'desc')->first();
+//    
+//    if ($leitura && $leitura->inadequada()) {
+//        $usuario = $cpd->empresa->usuario;
+//        
+//        SimpleMail::make()
+//                ->setTo($usuario->email, $usuario->nome)
+//                ->setFrom('noreply@snow.com', 'Snow')
+//                ->setSubject('Atenção! Seu CPD está com medições inadequadas.')
+//                ->setMessage("<p>O CPD $cpd->numero->serial está registrando medições inadequadas</p><p>Temperatura: $leitura->temperatura / Umidade: $leitura->umidade</p>")
+//                ->send();
+//    }
 
     return (new Illuminate\Http\Response(null, 201));
 });
