@@ -25,4 +25,8 @@ class Empresa extends Model
     {
         return $this->hasMany('App\Cpd');
     }
+    
+    public function usuario() {
+        return $this->belongsTo('App\Usuario');
+    }
 }

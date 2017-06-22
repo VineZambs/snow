@@ -6,7 +6,7 @@ use \App\Cpd;
 use \App\Session;
 use \Illuminate\Http\Request;
 
-/** Site **/
+/** Site * */
 $app->get('/', function () use ($app) {
     return view('site', ['view' => 'home']);
 });
@@ -20,15 +20,15 @@ $app->post('/cadastro', function (Request $request) use ($app) {
     $emailExistente = Usuario::where('email', '=', $request->input('usuario')['email'])->count();
     $cnpjExistente = Empresa::where('cnpj', '=', $request->input('empresa')['cnpj'])->count();
 
-    if($cpfExistente){
+    if ($cpfExistente) {
         return view('site', ['view' => 'cadastro', 'erro' => 'CPF já cadastrado no sistema.']);
     }
 
-    if($emailExistente){
+    if ($emailExistente) {
         return view('site', ['view' => 'cadastro', 'erro' => 'E-mail já cadastrado no sistema.']);
     }
 
-    if($cnpjExistente){
+    if ($cnpjExistente) {
         return view('site', ['view' => 'cadastro', 'erro' => 'CNPJ já cadastrado no sistema.']);
     }
 
@@ -52,12 +52,12 @@ $app->get('/login', function () use ($app) {
 $app->post('/login', function (Request $request) use ($app) {
     $usuario = Usuario::where('email', '=', $request->input('email'))->first();
 
-    if($usuario && $usuario->senha == $request->input('senha')){
+    if ($usuario && $usuario->senha == $request->input('senha')) {
         Session::login($usuario);
 
-        if($usuario->tipo == Usuario::ADMIN){
+        if ($usuario->tipo == Usuario::ADMIN) {
             return redirect('/admin/home');
-        }else{
+        } else {
             return redirect('/painel/dashboard');
         }
     }
@@ -69,7 +69,7 @@ $app->get('/teste', function () use ($app) {
     return view('teste');
 });
 
-/** Painel **/
+/** Painel * */
 $app->get('/painel/dashboard', function () use ($app) {
     return view('painel', ['view' => 'dashboard', 'usuario' => Session::user()]);
 });
@@ -87,7 +87,7 @@ $app->get('/painel/cadastro', function () use ($app) {
 $app->post('/painel/cadastro', function (Request $request) use ($app) {
     $cpd = Cpd::where('numero_serial', '=', $request->input('cpd')['numero_serial'])->first();
 
-    if(!$cpd){
+    if (!$cpd) {
         return view('painel', ['view' => 'cadastro', 'usuario' => Session::user(), 'erro' => 'Número serial não disponível no sistema.']);
     }
 
@@ -114,7 +114,7 @@ $app->get('/painel/cpd/{id}/editar', function ($id) use ($app) {
 
 $app->post('/painel/cpd/{id}/editar', function ($id, Request $request) use ($app) {
     $cpd = Cpd::find($id);
-    
+
     $cpd->fill($request->input('cpd'));
     $cpd->save();
 
@@ -123,10 +123,10 @@ $app->post('/painel/cpd/{id}/editar', function ($id, Request $request) use ($app
 
 $app->get('/painel/cpd/{id}/relatorio', function ($id, Request $request) use ($app) {
     $cpd = Cpd::find($id);
-    
-    if($request->input('filtros')){
+
+    if ($request->input('filtros')) {
         $filtros = explode(',', $request->input('filtros'));
-    }else{
+    } else {
         $filtros = [];
     }
 
@@ -137,7 +137,7 @@ $app->get('/painel/cpd/{id}/exportar', function ($id) use ($app) {
     $cpd = Cpd::find($id);
     $csv = "data;temperatura;umidade\n";
 
-    foreach($cpd->leituras as $leitura){
+    foreach ($cpd->leituras as $leitura) {
         $horario = date('d/m/Y h:i:s', strtotime($leitura->horario));
         $csv .= "$horario;$leitura->temperatura;$leitura->umidade\n";
     }
@@ -171,7 +171,7 @@ $app->post('/painel/perfil', function (Request $request) use ($app) {
     return view('painel', ['view' => 'perfil', 'usuario' => $usuario, 'sucesso' => 'Os dados foram atualizados!']);
 });
 
-/** Admin **/
+/** Admin * */
 $app->get('/admin/home', function () use ($app) {
     return view('admin', ['view' => 'home', 'usuario' => Session::user()]);
 });
@@ -195,7 +195,7 @@ $app->get('/admin/cpds/novo', function () use ($app) {
 $app->post('/admin/cpds/novo', function (Request $request) use ($app) {
     $serialExistente = Cpd::where('numero_serial', '=', $request->input('cpd')['numero_serial'])->count();
 
-    if($serialExistente){
+    if ($serialExistente) {
         return view('admin', ['view' => 'novo-cpd', 'usuario' => Session::user(), 'erro' => 'Serial já cadastrado no sistema.']);
     }
 
@@ -206,11 +206,11 @@ $app->post('/admin/cpds/novo', function (Request $request) use ($app) {
     return view('admin', ['view' => 'cpds', 'usuario' => Session::user(), 'cpds' => $cpds, 'sucesso' => 'O CPD foi cadastrado com sucesso.']);
 });
 
-/** Api **/
+/** Api * */
 $app->post('/api/leitura', function (Request $request) use ($app) {
     $cpd = Cpd::where('numero_serial', '=', $request->input('serial'))->first();
 
-    if(!$cpd){
+    if (!$cpd) {
         return (new Illuminate\Http\Response(null, 404));
     }
 
@@ -219,6 +219,38 @@ $app->post('/api/leitura', function (Request $request) use ($app) {
         'umidade' => $request->input('umidade'),
         'horario' => date('Y-m-d h:i:s')
     ]);
+
+    $leitura = array_pop($cpd->leituras);
+    
+    if ($leitura && $leitura->inadequada()) {
+        $usuario = $cpd->empresa->usuario;
+        
+        SimpleMail::make()
+                ->setTo($usuario->email, $usuario->nome)
+                ->setFrom('noreply@snow.com', 'Snow')
+                ->setSubject('Atenção! Seu CPD está com medições inadequadas.')
+                ->setMessage("<p>O CPD $cpd->numero->serial está registrando medições inadequadas</p><p>Temperatura: $leitura->temperatura / Umidade: $leitura->umidade</p>")
+                ->send();
+    }
+
+    return (new Illuminate\Http\Response(null, 201));
+});
+
+$app->get('/teste-email/{serial}', function ($serial) use ($app) {
+    $cpd = Cpd::where('numero_serial', '=', $serial)->first();
+
+    if (!$cpd) {
+        return (new Illuminate\Http\Response(null, 404));
+    }
+
+    $leitura = $cpd->leituras()->orderBy('horario', 'desc')->first();
+    
+    if ($leitura) {
+        $mailer = new App\Mailer();
+        $mailer->send($cpd, $leitura);
+        
+        echo 'email enviado';
+    }
 
     return (new Illuminate\Http\Response(null, 201));
 });

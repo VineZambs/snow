@@ -141,6 +141,6 @@ if ($filtrarFalhas) {
             }
         }
         
-        window.location = '/painel/cpd/1/relatorio?filtros=' + filtros.join(',');
+        window.location = '/painel/cpd/<?= $cpd->id ?>/relatorio?filtros=' + filtros.join(',');
     }
 </script>
