@@ -106,6 +106,21 @@ $app->get('/painel/cpd/{id}', function ($id) use ($app) {
     return view('painel', ['view' => 'monitoracao', 'usuario' => Session::user(), 'cpd' => $cpd]);
 });
 
+$app->get('/painel/cpd/{id}/editar', function ($id) use ($app) {
+    $cpd = Cpd::find($id);
+
+    return view('painel', ['view' => 'editar', 'usuario' => Session::user(), 'cpd' => $cpd]);
+});
+
+$app->post('/painel/cpd/{id}/editar', function ($id, Request $request) use ($app) {
+    $cpd = Cpd::find($id);
+    
+    $cpd->fill($request->input('cpd'));
+    $cpd->save();
+
+    return view('painel', ['view' => 'monitoracao', 'usuario' => Session::user(), 'cpd' => $cpd, 'sucesso' => 'Os parâmetros foram atualizados.']);
+});
+
 $app->get('/painel/cpd/{id}/relatorio', function ($id) use ($app) {
     $cpd = Cpd::find($id);
 

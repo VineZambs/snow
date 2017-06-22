@@ -9,6 +9,10 @@
     <?php if ($leitura_atual->umidade < $cpd->umidade_min || $leitura_atual->umidade > $cpd->umidade_max): ?>
         <div class="alert alert-danger">Atenção. A umidade do CPD está fora dos valores definidos!</div>
     <?php endif ?>
+        
+        <?php if (isset($sucesso)): ?>
+        <div class="alert alert-success"><?=$sucesso?></div>
+    <?php endif ?>
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
@@ -38,7 +42,6 @@
         <p>Umidade aceitável: De <?= $cpd->umidade_min ?>% à <?= $cpd->umidade_max ?>%</p>
         <p>Última leitura: <?= date('d/m/Y h:i:s', strtotime($leitura_atual->horario)) ?></p>
     </div>
-
 
     <script src="/js/gauge.min.js"></script>
     <script>
