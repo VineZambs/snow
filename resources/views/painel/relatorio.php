@@ -1,17 +1,19 @@
 <?php
-    if($filtrarFalhas){
-        $leituras = $cpd->leituras()
-                ->where('temperatura', '>', $cpd->temperatura_max)
-                ->orWhere('temperatura', '<', $cpd->temperatura_min)
-                ->orWhere('umidade', '>', $cpd->umidade_max)
-                ->orWhere('umidade', '<', $cpd->umidade_min)
-                ->orderBy('horario', 'desc')
-                ->get();
-    }else{
-        $leituras = $cpd->leituras()->orderBy('horario', 'desc')->get();
-    }
+$filtrarFalhas = array_search('falhas', $filtros) !== false;
+$filtrarTemperatura = array_search('temperatura', $filtros) !== false;
+$filtrarUmidade = array_search('umidade', $filtros) !== false;
 
-    
+if ($filtrarFalhas) {
+    $leituras = $cpd->leituras()
+            ->where('temperatura', '>', $cpd->temperatura_max)
+            ->orWhere('temperatura', '<', $cpd->temperatura_min)
+            ->orWhere('umidade', '>', $cpd->umidade_max)
+            ->orWhere('umidade', '<', $cpd->umidade_min)
+            ->orderBy('horario', 'desc')
+            ->get();
+} else {
+    $leituras = $cpd->leituras()->orderBy('horario', 'desc')->get();
+}
 ?>
 
 <h2>CPD <?= $cpd->numero_serial ?></h2>
@@ -19,15 +21,27 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
     <li><a href="/painel/cpd/<?= $cpd->id ?>">Monitoração</a></li>
-    <li class="active"><a href="/painel/cpd/<?= $cpd->id ?>/relatorio">Relatório</a></li>
+    <li class="active"><a href="/painel/cpd/<?= $cpd->id ?>/relatorio?filtros=temperatura,umidade">Relatório</a></li>
     <a href="/painel/cpd/<?= $cpd->id ?>/exportar" class="btn btn-success nav-button">Exportar CSV</a>
-    
-    <?php if(!$filtrarFalhas): ?>
-        <a href="/painel/cpd/<?= $cpd->id ?>/relatorio/falhas" class="btn btn-primary nav-button">Filtrar Falhas</a>
-    <?php else: ?>
-        <a href="/painel/cpd/<?= $cpd->id ?>/relatorio" class="btn btn-primary nav-button">Relatório Completo</a>
-    <?php endif ?>
 </ul>
+
+<div class="form-inline">
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" <?php if($filtrarTemperatura) echo 'checked'?> value="temperatura"> Temperatura
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" <?php if($filtrarUmidade) echo 'checked'?>  value="umidade"> Umidade
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" <?php if($filtrarFalhas) echo 'checked'?>  value="falhas"> Apenas Falhas
+        </label>
+    </div>
+</div>
 
 <div id="chartContainer"></div>
 
@@ -36,16 +50,24 @@
     <table class="table table-striped">
         <tr>
             <th>Data/Horário</th>
-            <th>Temperatura</th>
-            <th>Umidade</th>
+            <?php if($filtrarTemperatura): ?>
+                <th>Temperatura</th>
+            <?php endif ?>
+            <?php if($filtrarUmidade): ?>
+                <th>Umidade</th>
+            <?php endif ?>
         </tr>
-        <?php foreach ($leituras as $leitura): ?>
-            <tr <?php if($leitura->inadequada()) echo 'class="danger"'?>>
+    <?php foreach ($leituras as $leitura): ?>
+            <tr <?php if ($leitura->inadequada()) echo 'class="danger"' ?>>
                 <td><?= date('d/m/Y h:i:s', strtotime($leitura->horario)) ?></td>
-                <td ><?= $leitura->temperatura ?> °C</td>
-                <td><?= $leitura->umidade ?>% </td>
+                <?php if($filtrarTemperatura): ?>
+                    <td ><?= $leitura->temperatura ?> °C</td>
+                <?php endif ?>
+                <?php if($filtrarUmidade): ?>
+                    <td><?= $leitura->umidade ?>% </td>
+                <?php endif ?>
             </tr>
-        <?php endforeach ?>
+    <?php endforeach ?>
     </table>
 
 <?php else: ?>
@@ -56,13 +78,13 @@
 <script src="/js/canvasjs.min.js"></script>
 <script type="text/javascript">
     var pontosTemperatura = <?= \App\GeradorJson::temperatura($leituras) ?>;
-    var pontosUmidade = <?=\App\GeradorJson::umidade($leituras) ?>;
+    var pontosUmidade = <?= \App\GeradorJson::umidade($leituras) ?>;
 
-    for(i in pontosTemperatura){
+    for (i in pontosTemperatura) {
         pontosTemperatura[i].x = new Date(pontosTemperatura[i].x);
     }
 
-    for(i in pontosUmidade){
+    for (i in pontosUmidade) {
         pontosUmidade[i].x = new Date(pontosUmidade[i].x);
     }
 
@@ -74,27 +96,51 @@
                     axisY: {
                         includeZero: false
                     },
-                    legend:{
+                    legend: {
                         fontSize: 24
                     },
                     data: [
-                        {
-                            name: "Temperatura (C)",
-                            showInLegend: true,
-                            type: "line",
-                            color: "red",
-                            dataPoints: pontosTemperatura
-                        },
-                        {
-                            name: "Umidade (%)",
-                            showInLegend: true,
-                            type: "line",
-                            color: "blue",
-                            dataPoints: pontosUmidade
-                        },
+                        <?php if($filtrarTemperatura): ?>
+                            {
+                                name: "Temperatura (C)",
+                                showInLegend: true,
+                                type: "line",
+                                color: "red",
+                                dataPoints: pontosTemperatura
+                            },
+                        <?php endif ?>
+                        <?php if($filtrarUmidade): ?>
+                            {
+                                name: "Umidade (%)",
+                                showInLegend: true,
+                                type: "line",
+                                color: "blue",
+                                dataPoints: pontosUmidade
+                            }
+                        <?php endif ?>
                     ]
                 });
 
         chart.render();
+        
+        $('[type=checkbox]').click(filtrar);
+    }
+    
+    
+    
+    function filtrar(){
+        var checkboxes = document.querySelectorAll('[type=checkbox]');
+        var filtros = [];
+        
+        for(i in checkboxes){
+            var checkbox = checkboxes[i];
+            
+            console.log(checkbox)
+            if(checkbox.checked){
+                filtros.push(checkbox.value)
+            }
+        }
+        
+        window.location = '/painel/cpd/1/relatorio?filtros=' + filtros.join(',');
     }
 </script>

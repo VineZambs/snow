@@ -17,7 +17,7 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
         <li class="active"><a href="/painel/cpd/<?= $cpd->id ?>">Monitoração</a></li>
-        <li><a href="/painel/cpd/<?= $cpd->id ?>/relatorio">Relatório</a></li>
+        <li><a href="/painel/cpd/<?= $cpd->id ?>/relatorio?filtros=temperatura,umidade">Relatório</a></li>
         <a href="/painel/cpd/<?= $cpd->id ?>/editar" class="btn btn-success nav-button">Editar Parâmetros</a>
     </ul>
 
