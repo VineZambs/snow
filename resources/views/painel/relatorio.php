@@ -4,14 +4,14 @@
 <ul class="nav nav-tabs">
     <li><a href="/painel/cpd/<?= $cpd->id ?>">Monitoração</a></li>
     <li class="active"><a href="/painel/cpd/<?= $cpd->id ?>/relatorio">Relatório</a></li>
-    <a href="/painel/cpd/<?= $cpd->id ?>/exportar" class="btn btn-primary" style="float:right">Exportar CSV</a>
+    <a href="/painel/cpd/<?= $cpd->id ?>/exportar" class="btn btn-success nav-button">Exportar CSV</a>
 </ul>
 
 <div id="chartContainer"></div>
 
 <?php if (count($cpd->leituras) > 0): ?>
 
-    <table class="table">
+    <table class="table table-striped">
         <tr>
             <th>Data/Horário</th>
             <th>Temperatura</th>
